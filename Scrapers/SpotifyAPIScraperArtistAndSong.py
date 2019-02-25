@@ -20,6 +20,8 @@ def splitterFunction(artista):
     return artista
 
 artistNames = pandas.read_csv("/Users/gimmi/Downloads/eurovision_winners.csv", encoding = 'latin1')['Performer']
+trackNames = pandas.read_csv("/Users/gimmi/Downloads/eurovision_winners.csv", encoding = 'latin1')['Song']
+
 client_credentials_manager = SpotifyClientCredentials("75d944d4a2f64af3ada75b8d846451a8","399a7ee3bdc947b799148755314b4753")
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 toSave = []
@@ -31,7 +33,7 @@ for i in range(0, len(artistNames)):
     print("Iterazione su " + str(artistNames[i]))
     if contatore < 5000 and artistNames[i] and not artistNames[i] in added:
         toFind = splitterFunction(artistNames[i])
-        results = spotify.search(q='artist:' + toFind, type='artist')
+        results = spotify.search(q='artist:' + toFind +" track:" +trackNames[i], type='artist')
         time.sleep(2)
         if results['artists']['total'] == 0:
             print("Non ho trovato nulla per " + str(artistNames[i]))
@@ -45,7 +47,7 @@ for i in range(0, len(artistNames)):
         name = artista['name']
         toAppend = [name, generi, seguaci, popularity]
         contatore +=1
-        with open("/Users/gimmi/Desktop/Progetto ML/spotifyAPIScrapingEUROVISION.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
+        with open("/Users/gimmi/Desktop/Progetto ML/spotifyAPIScrapingEurovision.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
             wr = csv.writer(myfile)
             if firstTime:
                 wr.writerow(("artist", "genres", "followers", "popularity"))
