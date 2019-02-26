@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def NDChecker(value):
-    toCheck = [2, 3, 5, 6, 7]
+    toCheck = [3, 4, 5, 6, 7]
     for number in toCheck:
         if value[number] is None or value[number] == "ND":
             return True
@@ -13,7 +13,7 @@ def NDChecker(value):
 
 
 def nanchecker(value):
-    toCheck = [2, 3, 5, 6, 7]
+    toCheck = [3, 4, 5, 6, 7]
     for number in toCheck:
         if math.isnan(float(value[number])) or float(value[number]) is None:
             return True
@@ -26,16 +26,17 @@ dt = pd.read_csv('merged.csv', header=0)
 dtEur = pd.read_csv('mergedEur.csv', header=0)
 
 for i, row in enumerate(dt.itertuples()):
-    if row[2] == 'Followers' or row[2] == 'followers' or NDChecker(row) or i == 0:
+    if row[3] == 'Followers' or row[3] == 'followers' or NDChecker(row):
         continue
-    toAppend = [float(row[2]), float(row[3]), float(row[5]), float(row[6]), float(row[7])]
+    print(row[3])
+    toAppend = [float(row[3]), float(row[4]), float(row[5]), float(row[6]), float(row[7])]
     trainingSet.append(toAppend)
     testSet.append(row[8])
 
-for row in dtEur.itertuples():
-    if row[3] == 'Followers' or row[3] == 'followers':
+for i, row in enumerate(dtEur.itertuples()):
+    if row[3] == 'Followers' or row[3] == 'followers' or i == 1:
         continue
-    toAppend = [float(row[2]), float(row[3]), float(row[5]), float(row[6]), float(row[7])]
+    toAppend = [float(row[3]), float(row[4]), float(row[5]), float(row[6]), float(row[7])]
     trainingSet.append(toAppend)
     testSet.append(float(row[8]))
 x = len(testSet)
