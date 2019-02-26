@@ -5,13 +5,15 @@ import pandas as pd
 spotify = pd.read_csv("spotifyAPIScraping.csv", encoding="latin1", header=0,
                       names=["Artist", "Gen", "Followers", "Popularity"],
                       usecols=["Artist", "Followers", "Popularity"],
-                      na_values="ND").dropna(how="any")
+                      na_values=["ND", 0]).dropna(how="any")
 lastFM = pd.read_csv("lastFMAPIScraping.csv", encoding="latin1", header=0,
                      names=["Track", "Artist", "Listeners", "Plays", "Duration", "Gen"],
                      usecols=["Track", "Artist", "Listeners", "Plays", "Duration"],
-                     na_values="ND").dropna(how="any")
+                     na_values=["ND", 0]).dropna(how="any")
 
 dataset = pd.merge(lastFM, spotify, on="Artist", how="outer").dropna(how="any")
+
+dataset = dataset.drop_duplicates(subset=["Artist", "Track"])
 
 dataset["Winner"] = 0
 
