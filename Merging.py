@@ -11,7 +11,9 @@ lastFM = pd.read_csv("lastFMAPIScraping.csv", encoding="latin1", header=0,
                      usecols=["Track", "Artist", "Listeners", "Plays", "Duration"],
                      na_values="ND").dropna(how="any")
 
-dataset = pd.merge(spotify, lastFM, on="Artist", how="outer").dropna(how="any")
+dataset = pd.merge(lastFM, spotify, on="Artist", how="outer").dropna(how="any")
+
+dataset["Winner"] = 0
 
 dataset.to_csv("merged.csv", encoding="latin1", index=False)
 
@@ -24,6 +26,8 @@ lastFMEur = pd.read_csv("lastFMAPIScrapingEUROVISION.csv", encoding="latin1", he
                         usecols=["Track", "Artist", "Listeners", "Plays", "Duration"],
                         na_values="ND").dropna(how="all")
 
-datasetEur = pd.merge(spotifyEur, lastFMEur, on="Artist", how="outer")
+datasetEur = pd.merge(lastFMEur, spotifyEur, on="Artist", how="outer")
+
+datasetEur["Winner"] = 1
 
 datasetEur.to_csv("mergedEur.csv", encoding="latin1", index=False)
