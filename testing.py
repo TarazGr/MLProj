@@ -53,7 +53,6 @@ clf.fit(trainingSet,testSet)
 score = clf.score(trainingSet,testSet)
 
 newTesting = pd.read_csv("mergedEur2018.csv")
-newTesting = newTesting.drop('listeners',1)
 dicArtisti = {}
 for i, row in enumerate(newTesting.itertuples()):
     if row[3] == 'Followers' or row[3] == 'followers' or nd_checker(row):
@@ -62,7 +61,7 @@ for i, row in enumerate(newTesting.itertuples()):
     dicArtisti[row[2]] = toAppend
     
 for key in dicArtisti:
-    print(str(key) + " risulta che .... " + np.array2string(clf.predict([dicArtisti[key]])) +" eurovision 2018")
+    print(str(key) + " risulta che .... " + np.array2string(clf.predict([dicArtisti[key]])) + " eurovision 2018")
 print("ciao")
 stima = clf.densify()
 plt.plot(trainingSet, testSet, color='blue', linewidth=3)

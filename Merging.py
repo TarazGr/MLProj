@@ -39,3 +39,6 @@ datasetEur["Winner"] = 1
 datasetEur['Duration'] = datasetEur['Duration']/1000
 
 datasetEur.to_csv("mergedEur.csv", encoding="latin1", index=False)
+
+final_data = pd.concat([dataset, datasetEur])
+final_data.to_csv("dataset.csv", encoding="latin1", index=False)
