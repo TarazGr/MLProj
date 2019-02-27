@@ -19,7 +19,7 @@ def splitterFunction(artista):
         return toReturn[0].strip()
     return artista
 
-artistNames = pandas.read_csv("/Users/gimmi/Downloads/eurovision_winners.csv", encoding = 'latin1')['Performer']
+artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/ev_finals.csv", encoding = 'latin1')['Artist']
 client_credentials_manager = SpotifyClientCredentials("75d944d4a2f64af3ada75b8d846451a8","399a7ee3bdc947b799148755314b4753")
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 toSave = []
@@ -45,7 +45,7 @@ for i in range(0, len(artistNames)):
         name = artista['name']
         toAppend = [name, generi, seguaci, popularity]
         contatore +=1
-        with open("/Users/gimmi/Desktop/Progetto ML/spotifyAPIScrapingEUROVISION.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
+        with open("/Users/gimmi/Desktop/Progetto ML/eurovision2018ScrapingSpotify.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
             wr = csv.writer(myfile)
             if firstTime:
                 wr.writerow(("artist", "genres", "followers", "popularity"))

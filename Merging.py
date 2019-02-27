@@ -14,6 +14,7 @@ lastFM = pd.read_csv("lastFMAPIScraping.csv", encoding="latin1", header=0,
 dataset = pd.merge(lastFM, spotify, on="Artist", how="outer").dropna(how="any")
 
 dataset = dataset.drop_duplicates(subset=["Artist", "Track"])
+dataset['Duration'] = dataset['Duration']/1000
 
 dataset["Winner"] = 0
 
@@ -31,5 +32,6 @@ lastFMEur = pd.read_csv("lastFMAPIScrapingEUROVISION.csv", encoding="latin1", he
 datasetEur = pd.merge(lastFMEur, spotifyEur, on="Artist", how="outer")
 
 datasetEur["Winner"] = 1
+datasetEur['Duration'] = datasetEur['Duration']/1000
 
 datasetEur.to_csv("mergedEur.csv", encoding="latin1", index=False)

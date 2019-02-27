@@ -4,13 +4,13 @@ import pandas
 import time
 import csv
 
-trackTitles = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklist.csv", encoding = 'latin1')['title']
-artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklist.csv", encoding = 'latin1')['artist']
+trackTitles = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/ev_finals.csv")['Song']
+artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/ev_finals.csv")['Artist']
 toSave = []
 contatore = 0
 firstTime = True
 
-for i in range(14642, len(trackTitles)):
+for i in range(0, len(trackTitles)):
     if contatore < 5000:
         richiesta = requests.get("http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=007bb7dc4b7d8eef22dddd17427dc720&artist={artista}&track={traccia}&format=json".format(
             artista = artistNames[i],
@@ -20,7 +20,7 @@ for i in range(14642, len(trackTitles)):
         try:
             answer = json.loads(richiesta.text)
         except Exception:
-            print("HO SALTATO " + str(richiesta.text) + " PER ECCEZIONE")
+            print("HO SALTATO " + str(artistNames[i]) + " - " + str(trackTitles[i]) + " PER ECCEZIONE")
             continue
         print('error' in answer)
         if richiesta.status_code == 200 and not ('error' in answer and answer['error'] == 6):
@@ -29,7 +29,7 @@ for i in range(14642, len(trackTitles)):
             durata = answer['track']['duration'] if 'duration' in answer['track'] else 0
             genre = answer['track']['toptags']['tag'][0]['name'] if len(answer['track']['toptags']['tag']) > 0 else "ND"
             toAppend = [trackTitles[i], artistNames[i], answer['track']['listeners'], answer['track']['playcount'],durata, genre]
-            with open("/Users/gimmi/Desktop/Progetto ML/newTestingJSON.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
+            with open("/Users/gimmi/Desktop/Progetto ML/eurovision2018ScrapingLastFM.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
                 wr = csv.writer(myfile)
                 if firstTime:
                     wr.writerow(("track", "artist", "listeners", "playcount", "duration", "genre"))
