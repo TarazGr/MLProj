@@ -1,39 +1,28 @@
-from sklearn import tree
 import matplotlib
 import numpy as np
 import pandas as pd
-from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import confusion_matrix
-from sklearn import svm
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn import tree
+from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 # import graphviz
 import os
 os.environ["PATH"] += os.pathsep + 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\'
 
-train_set = pd.read_csv("dataset.csv", encoding="latin1", header=0)
+data = pd.read_csv("dataset.csv", encoding="latin1", header=0)
 
-train_set["Popularity"].apply(lambda x: 1 if x > 70 else 0)
+# data["Popularity"].apply(lambda x: 1 if x > 70 else 0)
 
-test_set = pd.read_csv("mergedEur2018.csv", encoding="latin1", header=0,
-                       names=["Track", "Artist", "Listeners", "Plays", "Duration", "Followers", "Popularity"],
-                       usecols=["Track", "Artist", "Listeners", "Plays", "Duration", "Followers", "Popularity"])
+features = data[["Listeners", "Plays", "Duration", "Followers", "Popularity"]]
+target = data["Winner"]
 
-test_set["Popularity"].apply(lambda x: 1 if x > 70 else 0)
+train_features, test_features, train_target, test_target = train_test_split(features, target)
 
-testing = {}
-for index, row in enumerate(test_set.values):
-    testing[row[0], row[1]] = [row[2], row[3], row[4], row[5], row[6]]
+clf = tree.DecisionTreeClassifier()
+clf.fit(train_features, train_target)
 
-target = train_set["Winner"]
-features = train_set[["Listeners", "Plays", "Duration", "Followers", "Popularity"]]
+predictions = clf.predict(test_features)
 
-clf = MLPClassifier(max_iter=100000)
-clf.fit(features, target)
+print(confusion_matrix(test_target, predictions))
 
-true = []
-pred = []
-for k, v in testing.items():
-    print(k, clf.predict([v]))
-    pred.append(clf.predict([v])[0])
-    true.append(1 if k == ('Toy', 'Netta') else 0)
-print(confusion_matrix(true, pred))
+print(classification_report(test_target, predictions))
