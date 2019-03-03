@@ -20,8 +20,8 @@ def splitterFunction(artista):
     return artista
 
 
-artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding = 'UTF-8')['Artist']
-trackNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding = 'UTF-8')['Track']
+artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/top5000songs-2-8-0023.csv", encoding = 'UTF-8')['artist']
+trackNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/top5000songs-2-8-0023.csv", encoding = 'UTF-8')['name']
 
 client_credentials_manager = SpotifyClientCredentials("75d944d4a2f64af3ada75b8d846451a8","399a7ee3bdc947b799148755314b4753")
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -29,6 +29,7 @@ toSave = []
 added = set()
 contatore = 0
 firstTime = False
+righe = 16045
 
 for i in range(0, len(artistNames)):
     print("Iterazione su " + str(artistNames[i]))
@@ -46,9 +47,11 @@ for i in range(0, len(artistNames)):
             print("ANALISI NON DISPONIBILI PER " + str(trackNames[i])  + " DI " + str(artistNames[i]))
             continue
         toAppend = []
+        toAppend.append(righe)
+        righe += 1
         toAppend.append(trackNames[i])
         toAppend.append(artistNames[i])
-        toAppend.append(1)
+        toAppend.append(0)
         toAppend.append(analisiTraccia[0]['danceability'])
         toAppend.append(analisiTraccia[0]['energy'])
         toAppend.append(analisiTraccia[0]['loudness'])
@@ -58,8 +61,8 @@ for i in range(0, len(artistNames)):
         toAppend.append(analisiTraccia[0]['liveness'])
         toAppend.append(analisiTraccia[0]['key'])
         toAppend.append(analisiTraccia[0]['mode'])
-        toAppend.append(analisiTraccia[0]['duration_ms'])
-        with open("/Users/gimmi/Desktop/Progetto ML/datasetFINAL2.csv", "a", encoding="UTF-8", newline='') as myfile:
+        toAppend.append(analisiTraccia[0]['duration_ms']/1000)
+        with open("/Users/gimmi/Desktop/Progetto ML/datasetFINAL.csv", "a", encoding="UTF-8", newline='') as myfile:
             wr = csv.writer(myfile)
             if firstTime:
                 wr.writerow(("track","artist","winner","danceability","energy","loudness","speechiness","acousticness","instrumentalness","liveness","key","mode","duration"))
