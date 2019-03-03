@@ -19,38 +19,50 @@ def splitterFunction(artista):
         return toReturn[0].strip()
     return artista
 
-artistNames = pandas.read_csv("/Users/gimmi/Downloads/eurovision_winners.csv", encoding = 'latin1')['Performer']
-trackNames = pandas.read_csv("/Users/gimmi/Downloads/eurovision_winners.csv", encoding = 'latin1')['Song']
+
+artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding = 'UTF-8')['Artist']
+trackNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding = 'UTF-8')['Track']
 
 client_credentials_manager = SpotifyClientCredentials("75d944d4a2f64af3ada75b8d846451a8","399a7ee3bdc947b799148755314b4753")
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 toSave = []
 added = set()
 contatore = 0
-firstTime = True
+firstTime = False
 
 for i in range(0, len(artistNames)):
     print("Iterazione su " + str(artistNames[i]))
-    if contatore < 5000 and artistNames[i] and not artistNames[i] in added:
+    if contatore < 5000 and artistNames[i] and not trackNames[i] in added:
         toFind = splitterFunction(artistNames[i])
-        results = spotify.search(q='artist:' + toFind +" track:" +trackNames[i], type='artist')
+        results = spotify.search(q='artist:' + toFind +" track:" +trackNames[i], type='track')
         time.sleep(2)
-        if results['artists']['total'] == 0:
+        if results['tracks']['total'] == 0:
             print("Non ho trovato nulla per " + str(artistNames[i]))
             continue
-        idArtista = results['artists']['items'][0]['id']
-        artista = spotify.artist(idArtista)
-        time.sleep(2)
-        generi = ' '.join(artista['genres'])
-        seguaci = artista['followers']['total']
-        popularity = artista['popularity']
-        name = artista['name']
-        toAppend = [name, generi, seguaci, popularity]
-        contatore +=1
-        with open("/Users/gimmi/Desktop/Progetto ML/spotifyAPIScrapingEurovision.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
+        idTraccia = results['tracks']['items'][0]['id']
+        analisiTraccia = spotify.audio_features(idTraccia)
+        contatore += 2
+        if None in analisiTraccia:
+            print("ANALISI NON DISPONIBILI PER " + str(trackNames[i])  + " DI " + str(artistNames[i]))
+            continue
+        toAppend = []
+        toAppend.append(trackNames[i])
+        toAppend.append(artistNames[i])
+        toAppend.append(1)
+        toAppend.append(analisiTraccia[0]['danceability'])
+        toAppend.append(analisiTraccia[0]['energy'])
+        toAppend.append(analisiTraccia[0]['loudness'])
+        toAppend.append(analisiTraccia[0]['speechiness'])
+        toAppend.append(analisiTraccia[0]['acousticness'])
+        toAppend.append(analisiTraccia[0]['instrumentalness'])
+        toAppend.append(analisiTraccia[0]['liveness'])
+        toAppend.append(analisiTraccia[0]['key'])
+        toAppend.append(analisiTraccia[0]['mode'])
+        toAppend.append(analisiTraccia[0]['duration_ms'])
+        with open("/Users/gimmi/Desktop/Progetto ML/datasetFINAL2.csv", "a", encoding="UTF-8", newline='') as myfile:
             wr = csv.writer(myfile)
             if firstTime:
-                wr.writerow(("artist", "genres", "followers", "popularity"))
+                wr.writerow(("track","artist","winner","danceability","energy","loudness","speechiness","acousticness","instrumentalness","liveness","key","mode","duration"))
                 firstTime = False
             try:
                 wr.writerows([toAppend])
@@ -58,7 +70,7 @@ for i in range(0, len(artistNames)):
                 print("Ciao")
             myfile.close()
         print("Aggiunto con successo " + str(artistNames[i]))
-        added.add(artistNames[i])
+        added.add(trackNames[i])
     if contatore >= 5000:
         time.sleep(180)
         contatore = 0

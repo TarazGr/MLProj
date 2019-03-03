@@ -4,8 +4,8 @@ import pandas
 import time
 import csv
 
-trackTitles = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/ev_finals.csv")['Song']
-artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/ev_finals.csv")['Artist']
+trackTitles = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding='latin1')['Track']
+artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/tracklistEUROVISION.csv", encoding='latin1')['Artist']
 toSave = []
 contatore = 0
 firstTime = True
@@ -29,7 +29,7 @@ for i in range(0, len(trackTitles)):
             durata = answer['track']['duration'] if 'duration' in answer['track'] else 0
             genre = answer['track']['toptags']['tag'][0]['name'] if len(answer['track']['toptags']['tag']) > 0 else "ND"
             toAppend = [trackTitles[i], artistNames[i], answer['track']['listeners'], answer['track']['playcount'],durata, genre]
-            with open("/Users/gimmi/Desktop/Progetto ML/eurovision2018ScrapingLastFM.csv", "a", encoding="ISO-8859-1", newline='') as myfile:
+            with open("/Users/gimmi/Desktop/Progetto ML/lastFMScrapingEUR.csv", "a", encoding="UTF-8", newline='') as myfile:
                 wr = csv.writer(myfile)
                 if firstTime:
                     wr.writerow(("track", "artist", "listeners", "playcount", "duration", "genre"))
