@@ -8,10 +8,9 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv("datasetFINAL.csv", encoding="latin1", header=0)
 
-# data["Popularity"].apply(lambda x: 1 if x > 70 else 0)
-
-features = data[["listeners","playcount","duration","followers","popularity","Winner","danceability","energy","loudness","speechiness","acousticness","instrumentalness","liveness"]]
-target = data["Winner"]
+features = data[["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "liveness",
+                 "key", "mode", "duration"]]
+target = data["billboarder"]
 
 train_features, test_features, train_target, test_target = train_test_split(features, target)
 

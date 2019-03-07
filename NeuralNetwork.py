@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv("datasetFINAL.csv", encoding="latin1", header=0)
 
-features = data[["listeners", "playcount", "duration", "followers", "popularity"]]
-target = data["Winner"]
+features = data[["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "liveness",
+                 "key", "mode", "duration"]]
+target = data["billboarder"]
 
 scaler = RobustScaler()
 
@@ -21,7 +22,7 @@ scaler.fit(train_features)
 train_features = scaler.transform(train_features)
 test_features = scaler.transform(test_features)
 
-clf = MLPClassifier(hidden_layer_sizes=(13,13,13), verbose=True)
+clf = MLPClassifier(hidden_layer_sizes=(10, 100, 1000, 1000), verbose=True, max_iter=1000, activation="logistic")
 clf = clf.fit(train_features, train_target)
 
 predictions = clf.predict(test_features)
@@ -29,20 +30,3 @@ predictions = clf.predict(test_features)
 print(confusion_matrix(test_target, predictions))
 
 print(classification_report(test_target, predictions))
-
-print("--------------------------------------------------------------------")
-
-from sklearn.ensemble import RandomForestClassifier
-forest = RandomForestClassifier(n_estimators=20)
-forest = forest.fit(train_features,train_target)
-predictioni = forest.predict(test_features)
-
-print(confusion_matrix(test_target, predictioni))
-
-print(classification_report(test_target, predictioni))
-
-datiTesting = pd.read_csv("mergedEur2018.csv", encoding="latin1", header=0)
-oggetto = datiTesting[["listeners", "playcount", "duration", "followers", "popularity"]]
-
-predizioni = forest.predict(oggetto)
-print("ciao")
