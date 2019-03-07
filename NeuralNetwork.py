@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler, RobustScaler
 import matplotlib.pyplot as plt
 from joblib import dump, load
 
-data = pd.read_csv("datasetFINAL.csv", encoding="latin1", header=0)
+data = pd.read_csv("datasetRidotto.csv", encoding="latin1", header=0)
 
 features = data[["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "liveness",
                  "key", "mode", "duration"]]
@@ -23,7 +23,7 @@ scaler.fit(train_features)
 train_features = scaler.transform(train_features)
 test_features = scaler.transform(test_features)
 
-clf = MLPClassifier(hidden_layer_sizes=(10, 100, 1000, 1000), verbose=True, max_iter=1000, activation="logistic")
+clf = MLPClassifier(hidden_layer_sizes=(10, 100, 1000), verbose=True, max_iter=1000)
 clf = clf.fit(train_features, train_target)
 
 predictions = clf.predict(test_features)
