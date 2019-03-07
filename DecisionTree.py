@@ -5,6 +5,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn import tree
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+from joblib import dump, load
 
 data = pd.read_csv("datasetFINAL.csv", encoding="latin1", header=0)
 
@@ -22,3 +23,5 @@ predictions = clf.predict(test_features)
 print(confusion_matrix(test_target, predictions))
 
 print(classification_report(test_target, predictions))
+
+dump(clf, "DTree_Model")
