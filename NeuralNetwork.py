@@ -6,6 +6,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, RobustScaler
 import matplotlib.pyplot as plt
+from joblib import dump, load
 
 data = pd.read_csv("datasetFINAL.csv", encoding="latin1", header=0)
 
@@ -30,3 +31,5 @@ predictions = clf.predict(test_features)
 print(confusion_matrix(test_target, predictions))
 
 print(classification_report(test_target, predictions))
+
+dump(clf, "Neural_Model.joblib")
