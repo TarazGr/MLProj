@@ -1,3 +1,4 @@
+from sklearn.ensemble import RandomForestClassifier
 import matplotlib
 import numpy as np
 import pandas as pd
@@ -14,14 +15,10 @@ target = data["billboarder"]
 
 train_features, test_features, train_target, test_target = train_test_split(features, target)
 
-clf = tree.DecisionTreeClassifier()
+clf = RandomForestClassifier()
 clf = clf.fit(train_features, train_target)
 predictions = clf.predict(test_features)
 
 print(confusion_matrix(test_target, predictions))
 
 print(classification_report(test_target, predictions))
-
-
-
-# dump(clf, "DTree_Model.joblib")
