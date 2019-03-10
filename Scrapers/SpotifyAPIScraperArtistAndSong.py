@@ -17,12 +17,15 @@ def splitter_function(artista):
         return to_return[0].strip()
     return artista
 
+pathToFile = "./tracklist.csv"
+#pathToNewDataset = "./top5000songs-2-8-0023.csv"
+artistNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['artist']
+trackNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['title']
+#artistNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['artist']
+#trackNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['name']
 
-artistNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/top5000songs-2-8-0023.csv", encoding='UTF-8')['artist']
-trackNames = pandas.read_csv("/Users/gimmi/Desktop/Progetto ML/top5000songs-2-8-0023.csv", encoding='UTF-8')['name']
-
-client_credentials_manager = SpotifyClientCredentials("75d944d4a2f64af3ada75b8d846451a8",
-                                                      "399a7ee3bdc947b799148755314b4753")
+client_credentials_manager = SpotifyClientCredentials(MY SPOTIFY SECRET KEY,
+                                                      MY SPOTIFY TOKEN)
 spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 toSave = []
 added = set()
