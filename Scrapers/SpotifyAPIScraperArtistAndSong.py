@@ -17,7 +17,7 @@ def splitter_function(artista):
         return to_return[0].strip()
     return artista
 
-pathToFile = "./tracklist.csv"
+pathToFile = "./billboard.csv"
 #pathToNewDataset = "./top5000songs-2-8-0023.csv"
 artistNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['artist']
 trackNames = pandas.read_csv(pathToNewDataset, encoding='UTF-8')['title']
