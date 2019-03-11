@@ -8,7 +8,7 @@ data = pd.read_csv('billboard_2000_2018_spotify_lyrics.csv',encoding='latin1', n
 
 whatWillBeConsidered = data[["title","artist","energy","liveness","speechiness","acousticness","instrumentalness","danceability","key","duration_ms","loudness","mode"]]
 
-whatWillBeConsidered = whatWillBeConsidered["duration_ms"] / 1000
+whatWillBeConsidered['duration_ms'] = whatWillBeConsidered["duration_ms"] / 1000
 
 whatWillBeConsidered['duration'] = whatWillBeConsidered['duration_ms']
 
