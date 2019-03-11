@@ -14,6 +14,8 @@ whatWillBeConsidered['duration'] = whatWillBeConsidered['duration_ms']
 
 whatWillBeConsidered["billboarder"] = 1
 
+whatWillBeConsidered['duration_ms'].drop()
+
 toMerge = pd.read_csv('datasetFINAL.csv', names=["index","track","artist","billboarder","danceability","energy","loudness","speechines","acousticness","instrumentalness","liveness","key","mode","duration"])
 
 toMerge = toMerge[["track","artist","billboarder","danceability","energy","loudness","speechines","acousticness","instrumentalness","liveness","key","mode","duration"]]
