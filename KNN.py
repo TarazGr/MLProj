@@ -36,7 +36,7 @@ for train_index, test_index in fold.split(df):
     train_features = train_set.drop(columns="billboarder")
     test_features = test_set.drop(columns="billboarder")
 
-    clf = KNeighborsClassifier().fit(train_features, train_target)
+    clf = KNeighborsClassifier(10).fit(train_features, train_target)
     predictions = clf.predict(test_features)
     scores.append(accuracy_score(test_target, predictions))
 
