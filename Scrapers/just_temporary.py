@@ -1,10 +1,12 @@
 import pandas as pd
-import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 df = pd.read_csv("SUPERTEST.csv", encoding="latin1", header=None,
-	names=["acousticness", "artist", "billboarder", "danceability", "duration", "energy", "instrumentalness", "key", "liveness", "loudness", "mode", "speechiness", "title", "followers", "popularity"], 
-	usecols=["acousticness", "billboarder", "danceability", "duration", "energy", "instrumentalness", "key", "liveness", "loudness", "mode", "speechiness", "followers", "popularity"])
+                 names=["acousticness", "artist", "billboarder", "danceability", "duration", "energy",
+                        "instrumentalness", "key", "liveness", "loudness", "mode", "speechiness", "title",
+                        "followers", "popularity"],
+                 usecols=["acousticness", "billboarder", "danceability", "duration", "energy", "instrumentalness",
+                          "key", "liveness", "loudness", "mode", "speechiness", "followers", "popularity"])
 
 to_scale = df[["loudness", "followers", "popularity"]]
 
@@ -14,4 +16,6 @@ df["loudness"] = scaled[:, 0]
 df["followers"] = scaled[:, 1]
 df["popularity"] = scaled[:, 2]
 
-print(df.describe())
+
+
+df.to_csv("../scaled.csv", index=False, encoding="latin1")
