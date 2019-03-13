@@ -1,8 +1,7 @@
 import pandas as pd 
 
 # Feature Engineering: drop all values with not defined values
-data = pd.read_csv('billboard_2000_2018_spotify_lyrics.csv', encoding='latin1', na_values=['unknown', 'NaN'],
-                   header=0)
+data = pd.read_csv('billboard_2000_2018_spotify_lyrics.csv', encoding='latin1', na_values=['unknown', 'NaN'], header=0)
 
 # now: let's drop the following columns:
 # "date","year","title","simple_title","artist","main_artist","peak_pos","last_pos","weeks","rank","change",
@@ -17,7 +16,11 @@ whatWillBeConsidered["billboarder"] = 1
 
 whatWillBeConsidered = whatWillBeConsidered.drop("duration_ms", axis=1)
 
-whatWillBeConsidered = whatWillBeConsidered.fillna(whatWillBeConsidered.mean())
+dropped = whatWillBeConsidered.dropna()
+
+mean_sub = whatWillBeConsidered.fillna(whatWillBeConsidered.mean())
+
+interpolated = whatWillBeConsidered.interpolate(limit_direction="both")
 
 toMerge = pd.read_csv('datasetFINAL.csv', header=0, names=["index", "title", "artist", "billboarder", "danceability",
                                                            "energy", "loudness", "speechiness", "acousticness",
@@ -26,6 +29,10 @@ toMerge = pd.read_csv('datasetFINAL.csv', header=0, names=["index", "title", "ar
 toMerge = toMerge[["title", "artist", "billboarder", "danceability", "energy", "loudness", "speechiness",
                    "acousticness", "instrumentalness", "liveness", "key", "mode", "duration"]]
 
-dataset = pd.concat([toMerge, whatWillBeConsidered], sort=True).drop_duplicates(["artist", "title"])
+dropped_data = pd.concat([toMerge, dropped], sort=True).drop_duplicates(["artist", "title"])
+mean_data = pd.concat([toMerge, mean_sub], sort=True).drop_duplicates(["artist", "title"])
+interpolated_data = pd.concat([toMerge, interpolated], sort=True).drop_duplicates(["artist", "title"])
 
-dataset.to_csv("Brand New Dataset (mean filled).csv", encoding="latin1", index=False)
+dropped_data.to_csv("Brand New Dataset.csv", encoding="latin1", index=False)
+mean_data.to_csv("Brand New Dataset (mean sub).csv", encoding="latin1", index=False)
+interpolated_data.to_csv("Brand New Dataset (interpolated).csv", encoding="latin1", index=False)
