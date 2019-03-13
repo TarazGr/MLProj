@@ -29,7 +29,9 @@ toMerge = pd.read_csv('datasetFINAL.csv', header=0, names=["index", "title", "ar
 toMerge = toMerge[["title", "artist", "billboarder", "danceability", "energy", "loudness", "speechiness",
                    "acousticness", "instrumentalness", "liveness", "key", "mode", "duration"]]
 
-dataset = pd.concat([toMerge, whatWillBeConsidered], sort=True).drop_duplicates(["artist", "title"])
+dropped_data = pd.concat([toMerge, dropped], sort=True).drop_duplicates(["artist", "title"])
+mean_data = pd.concat([toMerge, mean_sub], sort=True).drop_duplicates(["artist", "title"])
+interpolated_data = pd.concat([toMerge, interpolated], sort=True).drop_duplicates(["artist", "title"])
 
 dropped_data.to_csv("Brand New Dataset.csv", encoding="latin1", index=False)
 mean_data.to_csv("Brand New Dataset (mean sub).csv", encoding="latin1", index=False)
