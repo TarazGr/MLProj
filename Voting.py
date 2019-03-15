@@ -26,3 +26,4 @@ print(eclf3.transform(test_features).shape)
 for clf, label in zip([clf1, clf2, clf3, eclf3], ['Logistic Regression', 'Random Forest', 'naive Bayes', 'Ensemble']):
     scores = cross_val_score(clf, train_features, train_target, cv=5, scoring='accuracy')
     print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
+
